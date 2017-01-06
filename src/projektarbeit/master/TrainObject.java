@@ -1,89 +1,93 @@
 package projektarbeit.master;
 
 
-    import java.util.Date;
 
     public class TrainObject 
     {
-        private String trainID;
-        
-        private String line;
-        private String direction;
         private String departureTime;
-        private String dateString;
-        private Date date;
-        
+        private String date;        
         private int totalCapacity;
+        private int seatCapacity;
         private int totalArrivingPersons;
         private int totalDepartingPersons;
-        
-        private int utilization;
-        private int utilizationPercent;
+        private int totalUtilization;
+        private int seatUtilization;        
+        private double relativeTotalUtilization;
+        private double relativeSeatUtilization;        
+        private int leavingPersons;
+        private int enteringPersons;
         
         
         //---------- GET-Methods ----------
      
-    public String getTrainID()
-    {
-        return trainID;
-    }
+
     
     public String getDepartureTime()
     {
         return departureTime;
+    }
+    
+    public String getDate() 
+    {
+        return date;
     }
 
     public int getTotalCapacity() 
     {
         return totalCapacity;
     }
-
-    public int getUtilization() 
+    
+    public int getSeatCapacity()
     {
-        return utilization;
+        return seatCapacity;
     }
 
-    public int getUtilizationPercent() 
+    public int getTotalUtilization() 
     {
-        return utilizationPercent;
+        return totalUtilization;
     }
     
-    public Date getDate() 
+    public int getSeatUtilization() 
     {
-        return date;
+        return seatUtilization;
     }
+
+    public double getRelativeTotalUtilization() 
+    {
+        return relativeTotalUtilization;
+    }
+    
+    public double getRelativeSeatUtilization() 
+    {
+        return relativeSeatUtilization;
+    }
+
     
     
 
     //---------- Set-Methods ----------
     
     
-    public void setLine(String line) 
-    {
-        this.line = line;
-    }
-    
-    public void setDateString(String dateString) 
-    {            
-        this.dateString = dateString;
-    }
-
-    public void setDirection(String direction) 
-    {
-        this.direction = direction;
-    }
-
     public void setDepartureTime(String departureTime) 
     {
         this.departureTime = departureTime;
     }
     
+    public void setDate(String date) 
+    {            
+        this.date = date;
+    }
 
     public void setTotalCapacity(int totalCapacity) 
     {
         this.totalCapacity = totalCapacity;
     }
-
+    
+    public void setSeatCapacity(int seatCapacity) 
+    {
+        this.seatCapacity = seatCapacity;
+    }
+    
     public void setTotalArrivingPersons(int totalArrivingPersons)
     {
         this.totalArrivingPersons = totalArrivingPersons;
@@ -94,11 +98,26 @@ package projektarbeit.master;
         this.totalDepartingPersons = totalDepartingPersons;
     }
     
+    public void setLeavingPersons(int leavingPersons)
+    {
+        this.leavingPersons = leavingPersons;
+    }
+    
+    public void setEnteringPersons(int enteringPersons)
+    {
+        this.enteringPersons = enteringPersons;
+    }
     
     
-    //Auslastung an berechnen
-    //Auslastung ab berechnen
-        
+    public void calculateRelativeTotalUtilization()
+    {
+        this.relativeTotalUtilization = ((totalArrivingPersons/totalCapacity*100)+(totalDepartingPersons/totalCapacity*100)/2);
+    }
+    
+    public void calculateRelativeSeatUtilization()
+    {
+        this.relativeSeatUtilization = ((totalArrivingPersons/seatCapacity*100)+(totalDepartingPersons/seatCapacity*100)/2);
+    }
         
 }
 

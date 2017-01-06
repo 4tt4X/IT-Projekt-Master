@@ -29,8 +29,6 @@ public class DataImport
             
             ArrayList<SubwayStation> subwayStationList = new ArrayList<>();
             
-
-            
                      
             //Durchlaufen der einzelnen Worksheets eines Excel-Files
             Iterator<Sheet> sheetIterator = workbook.iterator();
@@ -41,55 +39,48 @@ public class DataImport
                                   
                SubwayStation station = new SubwayStation();
                Map<String, Integer> indices = new HashMap<>();
-               
                station.setStationName(workSheet.getSheetName());
                
+               Iterator<Row> rowIterator = workSheet.rowIterator();
                
                //Durchlaufen der einzelnen Zeilen eines Worksheets
-               for(int zeile=0; zeile<=workSheet.getLastRowNum();zeile++)
+               while(rowIterator.hasNext())
                {
-                   Row actualRow= workSheet.getRow(zeile);
+                   Row actualRow = rowIterator.next();
                    TrainObject train = new TrainObject();
-                          
+                   boolean firstRow = true;
+                   
                     //Durchlaufen der einzelnen Zellen einer Zeile
-                    for(int zelle=0; zelle<=actualRow.getLastCellNum();zelle++)
+                    for(int zelle=0; zelle<=actualRow.getPhysicalNumberOfCells();zelle++)
                     {
                         Cell actualCell = actualRow.getCell(zelle);
-                        actualCell.setCellType(Cell.CELL_TYPE_STRING);
-                        actualCell.setCellType(CellType.STRING);
-
-                            
-                        if(zeile==0)
+                        
+                        if(firstRow==true)
                         {
                             indices.put(actualCell.getStringCellValue(), zelle);
                         }
                         
-                                              
                         else
                         {
                             if(actualRow.getCell(indices.get("Erf")).getNumericCellValue()!=1)
                             {
-                                zeile+=1;
+                                break;
                             }
-                                
+
                             else
                             {
-                            
-                                if(zelle==indices.get("Linie")) //Line
-                                    train.setLine(actualCell.getStringCellValue());
 
-                                if(zelle==indices.get("Datum")) //Date
-                                    train.setDateString(actualCell.getStringCellValue());
-
-                                if(zelle==indices.get("Ri"))//Richtung
-                                    train.setDirection(actualCell.getStringCellValue());
-
-                                if(zelle==indices.get("Zeit Fpl"))//Abfahrtszeit
+                                if(zelle==indices.get("Zeit Fpl"))//DepartureTime
                                     train.setDepartureTime(actualCell.getStringCellValue());
 
+                                if(zelle==indices.get("Datum")) //Date
+                                    train.setDate(actualCell.getStringCellValue());
 
                                 if(zelle==indices.get("Plätze")) //totalCapacity
                                     train.setTotalCapacity(Integer.parseInt(actualCell.getStringCellValue()));
+
+                                if(zelle==indices.get("Sitz")) //seatCapacity
+                                    train.setSeatCapacity(Integer.parseInt(actualCell.getStringCellValue()));
 
                                 if(zelle==indices.get("Last An")) //totalArrivingPersons
                                     train.setTotalArrivingPersons(Integer.parseInt(actualCell.getStringCellValue()));
@@ -97,14 +88,17 @@ public class DataImport
                                 if(zelle==indices.get("Last Ab")) //totalDepartingPersons
                                     train.setTotalDepartingPersons(Integer.parseInt(actualCell.getStringCellValue()));
 
+                                if(zelle==indices.get("Aus")) //leavingPersons
+                                    train.setLeavingPersons(Integer.parseInt(actualCell.getStringCellValue()));
+
+                                if(zelle==indices.get("Ein")) //enteringPersons
+                                    train.setEnteringPersons(Integer.parseInt(actualCell.getStringCellValue()));
                             }
-                            
                         }
-                      
-                        
-                    }       
-                    
-                        trainObjectList.add(train);                                                
+                           
+                    }
+                    trainObjectList.add(train);
+                    firstRow=false;
                }
                     
                 subwayStationList.add(station);
@@ -113,3 +107,5 @@ public class DataImport
                    
     }
 }
+
+
