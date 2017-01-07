@@ -5,8 +5,11 @@ import java.util.ArrayList;
 
 public class SubwayStation 
 {
-    
     private String stationName;
+    
+    
+    private int maxBikeCapacity;
+    
     
     private ArrayList<Object> dataNode;
 

@@ -8,68 +8,59 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
-
-public class DataImport 
+public class TrainImport 
 {
         public static void main(String[] args) throws IOException 
         {
-            String excelFilePath = "C:\\Users\\Julian\\Google Drive\\IT-Projekt\\finale Daten\\Frankfurt\\U-Bahn-Daten-bereinigt.xlsx";
-            
+            String excelFilePath = "C:\\Users\\Julian\\Google Drive\\IT-Projekt\\finale Daten\\Verwendete Datensätze\\U-Bahn-Daten-bereinigt.xlsx";
+
             FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
         
             Workbook workbook = new XSSFWorkbook(inputStream);
           
             ArrayList<TrainObject> trainObjectList = new ArrayList<>();
             
-            ArrayList<SubwayStation> subwayStationList = new ArrayList<>();
-            
+            //ArrayList<SubwayStation> subwayStationList = new ArrayList<>();
                      
             //Durchlaufen der einzelnen Worksheets eines Excel-Files
             Iterator<Sheet> sheetIterator = workbook.iterator();
             
             while(sheetIterator.hasNext())
             {
-               Sheet workSheet = sheetIterator.next();
-                                  
-               SubwayStation station = new SubwayStation();
+               Sheet workSheet = sheetIterator.next();                                
+               //SubwayStation station = new SubwayStation();
                Map<String, Integer> indices = new HashMap<>();
-               station.setStationName(workSheet.getSheetName());
-               
-               Iterator<Row> rowIterator = workSheet.rowIterator();
+               //station.setStationName(workSheet.getSheetName());  
                
                //Durchlaufen der einzelnen Zeilen eines Worksheets
-               while(rowIterator.hasNext())
+               for(int zeile=0; zeile<=workSheet.getLastRowNum();zeile++)
                {
-                   Row actualRow = rowIterator.next();
+                   Row actualRow= workSheet.getRow(zeile);
                    TrainObject train = new TrainObject();
-                   boolean firstRow = true;
-                   
                     //Durchlaufen der einzelnen Zellen einer Zeile
-                    for(int zelle=0; zelle<=actualRow.getPhysicalNumberOfCells();zelle++)
+                    for(int zelle=0; zelle<=actualRow.getLastCellNum();zelle++)
                     {
                         Cell actualCell = actualRow.getCell(zelle);
-                        
-                        if(firstRow==true)
+                        try {
+                             int c =actualCell.getCellType();
+                            } catch (NullPointerException e) {
+                              break;
+                          }
+
+                        if(zeile==0)
                         {
+                            actualCell.setCellType(Cell.CELL_TYPE_STRING);
                             indices.put(actualCell.getStringCellValue(), zelle);
                         }
-                        
+              
                         else
                         {
-                            if(actualRow.getCell(indices.get("Erf")).getNumericCellValue()!=1)
-                            {
-                                break;
-                            }
-
-                            else
-                            {
-
+                            actualCell.setCellType(Cell.CELL_TYPE_STRING);
                                 if(zelle==indices.get("Zeit Fpl"))//DepartureTime
                                     train.setDepartureTime(actualCell.getStringCellValue());
 
@@ -95,17 +86,10 @@ public class DataImport
                                     train.setEnteringPersons(Integer.parseInt(actualCell.getStringCellValue()));
                             }
                         }
-                           
+                      trainObjectList.add(train);
                     }
-                    trainObjectList.add(train);
-                    firstRow=false;
-               }
-                    
-                subwayStationList.add(station);
-            }
-                        
-                   
+                //subwayStationList.add(station);                                                
+               }                
+            }                                   
     }
-}
-
 
