@@ -2,7 +2,6 @@ package projektarbeit.master;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,12 +15,13 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class TrainImport 
 {
-        public ArrayList<TrainObject> generateTrainList() throws FileNotFoundException, IOException
+        public ArrayList<TrainObject> generateTrainList() throws IOException
         {
             String excelFilePath = "C:\\Users\\Julian\\Google Drive\\IT-Projekt\\finale Daten\\Verwendete Datensätze\\U-Bahn-Daten-bereinigt.xlsx";
 
+
             FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
-        
+
             Workbook workbook = new XSSFWorkbook(inputStream);
           
             ArrayList<TrainObject> trainObjectList = new ArrayList<>();
@@ -32,9 +32,7 @@ public class TrainImport
             while(sheetIterator.hasNext())
             {
                Sheet workSheet = sheetIterator.next();                                
-               //SubwayStation station = new SubwayStation();
-               Map<String, Integer> indices = new HashMap<>();
-               //station.setStationName(workSheet.getSheetName());  
+               Map<String, Integer> indices = new HashMap<>(); 
                
                //Durchlaufen der einzelnen Zeilen eines Worksheets
                for(int zeile=0; zeile<=workSheet.getLastRowNum();zeile++)
@@ -60,37 +58,34 @@ public class TrainImport
                         else
                         {
                             actualCell.setCellType(Cell.CELL_TYPE_STRING);
-                                if(zelle==indices.get("Zeit Fpl"))//DepartureTime
-                                    train.setDepartureTime(actualCell.getStringCellValue());
+                            if(zelle==indices.get("Zeit Fpl"))//DepartureTime
+                                train.setTime(actualCell.getStringCellValue());
 
-                                if(zelle==indices.get("Datum")) //Date
-                                    train.setDate(actualCell.getStringCellValue());
+                            if(zelle==indices.get("Datum")) //Date
+                                train.setDate(actualCell.getStringCellValue());
 
-                                if(zelle==indices.get("Plätze")) //totalCapacity
-                                    train.setTotalCapacity(Integer.parseInt(actualCell.getStringCellValue()));
+                            if(zelle==indices.get("Plätze")) //totalCapacity
+                                train.setTotalCapacity(Integer.parseInt(actualCell.getStringCellValue()));
 
-                                if(zelle==indices.get("Sitz")) //seatCapacity
-                                    train.setSeatCapacity(Integer.parseInt(actualCell.getStringCellValue()));
+                            if(zelle==indices.get("Sitz")) //seatCapacity
+                                train.setSeatCapacity(Integer.parseInt(actualCell.getStringCellValue()));
 
-                                if(zelle==indices.get("Last An")) //totalArrivingPersons
-                                    train.setTotalArrivingPersons(Integer.parseInt(actualCell.getStringCellValue()));
+                            if(zelle==indices.get("Last An")) //totalArrivingPersons
+                                train.setTotalArrivingPersons(Integer.parseInt(actualCell.getStringCellValue()));
 
-                                if(zelle==indices.get("Last Ab")) //totalDepartingPersons
-                                    train.setTotalDepartingPersons(Integer.parseInt(actualCell.getStringCellValue()));
+                            if(zelle==indices.get("Last Ab")) //totalDepartingPersons
+                                train.setTotalDepartingPersons(Integer.parseInt(actualCell.getStringCellValue()));
 
-                                if(zelle==indices.get("Aus")) //leavingPersons
-                                    train.setLeavingPersons(Integer.parseInt(actualCell.getStringCellValue()));
+                            if(zelle==indices.get("Aus")) //leavingPersons
+                                train.setLeavingPersons(Integer.parseInt(actualCell.getStringCellValue()));
 
-                                if(zelle==indices.get("Ein")) //enteringPersons
-                                    train.setEnteringPersons(Integer.parseInt(actualCell.getStringCellValue()));
-                            }
+                            if(zelle==indices.get("Ein")) //enteringPersons
+                                train.setEnteringPersons(Integer.parseInt(actualCell.getStringCellValue()));
                         }
+                    }
                       trainObjectList.add(train);
-                    }                                               
-               }   
-            
-                    return trainObjectList;
+               }
             }
-        
-    }
-
+            return trainObjectList;
+        }
+}

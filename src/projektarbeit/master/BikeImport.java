@@ -3,7 +3,6 @@ package projektarbeit.master;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class BikeImport 
 {
 
-    public ArrayList<BikeObject> generateBikeList() throws FileNotFoundException, IOException
+    public ArrayList<BikeObject> generateBikeList() throws IOException
     {        
         String excelFilePath = "C:\\Users\\Martin\\Desktop\\IT projekt\\Bike_bereinigt.xlsx";
 

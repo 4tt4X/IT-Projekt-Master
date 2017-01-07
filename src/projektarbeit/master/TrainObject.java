@@ -1,21 +1,23 @@
 package projektarbeit.master;
 
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 
 
 
     public class TrainObject 
     {
-        private Timestamp departureTimeStamp;
-        private String date;        
+        private Timestamp departureDateTime;
+        private String date;
+        private String time;
         private int totalCapacity;
         private int seatCapacity;
         private int totalArrivingPersons;
         private int totalDepartingPersons;
         private int totalUtilization;
         private int seatUtilization;        
-        private double relativeTotalUtilization;
-        private double relativeSeatUtilization;        
+        private double relativeTotalUtilization = ((totalArrivingPersons/totalCapacity*100)+(totalDepartingPersons/totalCapacity*100)/2);
+        private double relativeSeatUtilization = ((totalArrivingPersons/seatCapacity*100)+(totalDepartingPersons/seatCapacity*100)/2);       
         private int leavingPersons;
         private int enteringPersons;
         
@@ -24,32 +26,32 @@ import java.sql.Timestamp;
      
 
     
-    public Timestamp getDepartureTimeStamp()
+    public Timestamp getDepartureDateTime()
     {
-        return departureTimeStamp;
+        return departureDateTime;
     }
     
-    public String getDate() 
+    public String getDate()
     {
         return date;
     }
-
-    public int getTotalCapacity() 
+    
+    public int getTotalCapacity() // Zur Anzeige auslesen
     {
         return totalCapacity;
     }
     
-    public int getSeatCapacity()
+    public int getSeatCapacity() // Zur Anzeige auslesen
     {
         return seatCapacity;
     }
 
-    public int getTotalUtilization() 
+    public int getTotalUtilization() // Zur Anzeige auslesen
     {
         return totalUtilization;
     }
     
-    public int getSeatUtilization() 
+    public int getSeatUtilization() // Zur Anzeige auslesen
     {
         return seatUtilization;
     }
@@ -69,15 +71,23 @@ import java.sql.Timestamp;
 
     //---------- Set-Methods ----------
     
+    //Methode, die Haltestelle nach Worksheet Name setzt
     
-    public void setDepartureTime(String departureTime) 
+    
+    public void setTime(String time) 
     {
-        this.departureTimeStamp = Timestamp.valueOf(departureTime);
+        this.time = time;
     }
     
-    public void setDate(String date) 
+    public void setDate(String date)
     {            
-        this.date = date;
+        this.date = new SimpleDateFormat("yyyy-MM-dd").format(date);
+    }
+    
+    public Timestamp getDepartureTimeAsTimestamp()
+    {
+        departureDateTime = Timestamp.valueOf(date+" "+time);
+        return departureDateTime;
     }
 
     public void setTotalCapacity(int totalCapacity) 
@@ -110,16 +120,6 @@ import java.sql.Timestamp;
         this.enteringPersons = enteringPersons;
     }
     
-    
-    public void calculateRelativeTotalUtilization()
-    {
-        this.relativeTotalUtilization = ((totalArrivingPersons/totalCapacity*100)+(totalDepartingPersons/totalCapacity*100)/2);
-    }
-    
-    public void calculateRelativeSeatUtilization()
-    {
-        this.relativeSeatUtilization = ((totalArrivingPersons/seatCapacity*100)+(totalDepartingPersons/seatCapacity*100)/2);
-    }
 }
 
     

@@ -1,20 +1,22 @@
 
 package projektarbeit.master;
 
+import java.sql.Timestamp;
+
 
 public class BikeObject 
 {
     
-    private String startRentalTime;
+    private Timestamp startRentalTimeStamp;
     private String endRentalTime;
     private String startRentalZone;
     private String endRentalZone;
     
      //---------- GET-Methods ----------
      
-    public String getStartRentalTime() 
+    public Timestamp getStartRentalTimeStamp() 
     {
-        return startRentalTime;
+        return startRentalTimeStamp;
     }
 
     public String getEndRentalTime() 
@@ -37,7 +39,7 @@ public class BikeObject
     
     public void setStartRentalTime(String startRentalTime) 
     {
-        this.startRentalTime = startRentalTime;
+        this.startRentalTimeStamp = Timestamp.valueOf(startRentalTime);
     }
         
     public void setEndRentalTime(String endRentalTime) 
