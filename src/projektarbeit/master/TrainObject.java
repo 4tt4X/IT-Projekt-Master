@@ -1,10 +1,12 @@
 package projektarbeit.master;
 
+import java.sql.Timestamp;
+
 
 
     public class TrainObject 
     {
-        private String departureTime;
+        private Timestamp departureTimeStamp;
         private String date;        
         private int totalCapacity;
         private int seatCapacity;
@@ -22,9 +24,9 @@ package projektarbeit.master;
      
 
     
-    public String getDepartureTime()
+    public Timestamp getDepartureTimeStamp()
     {
-        return departureTime;
+        return departureTimeStamp;
     }
     
     public String getDate() 
@@ -70,7 +72,7 @@ package projektarbeit.master;
     
     public void setDepartureTime(String departureTime) 
     {
-        this.departureTime = departureTime;
+        this.departureTimeStamp = Timestamp.valueOf(departureTime);
     }
     
     public void setDate(String date) 
@@ -118,7 +120,6 @@ package projektarbeit.master;
     {
         this.relativeSeatUtilization = ((totalArrivingPersons/seatCapacity*100)+(totalDepartingPersons/seatCapacity*100)/2);
     }
-        
 }
 
     

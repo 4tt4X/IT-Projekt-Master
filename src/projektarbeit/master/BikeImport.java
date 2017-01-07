@@ -3,13 +3,12 @@ package projektarbeit.master;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -18,9 +17,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class BikeImport 
 {
 
-    public static void main(String[] args) throws IOException 
-    {
-        String excelFilePath = "C:\\Users\\Julian\\Google Drive\\IT-Projekt\\finale Daten\\Verwendete Datensätze\\Bike_bereinigt.xlsx";
+    public ArrayList<BikeObject> generateBikeList() throws FileNotFoundException, IOException
+    {        
+        String excelFilePath = "C:\\Users\\Martin\\Desktop\\IT projekt\\Bike_bereinigt.xlsx";
 
         FileInputStream inputStream = new FileInputStream(new File(excelFilePath));
 
@@ -28,38 +27,39 @@ public class BikeImport
 
         ArrayList<BikeObject> bikeObjectList = new ArrayList<>();
 
-        Sheet workSheet = workbook.getSheet("Blatt1");
+        Sheet workSheet = workbook.getSheetAt(0);
 
         Map<String, Integer> indices = new HashMap<>();
-
-        //Durchlaufen der einzelnen Zeilen eines Worksheets
-        for(int zeile=0; zeile<=workSheet.getLastRowNum();zeile++)
-           {
-               Row actualRow= workSheet.getRow(zeile);
-               BikeObject bike = new BikeObject();
-
-               //Durchlaufen der einzelnen Zellen
-                for(int zelle=0; zelle<=actualRow.getLastCellNum();zelle++)
-                {
-                    Cell actualCell = actualRow.getCell(zelle);
-
+        //Durchlaufen der 0.Zeile  um max. Spalten zu bestimmen
+        Row one= workSheet.getRow(0);
+        int rowcounter = 0;
+        
+        for(int z=0;z<one.getLastCellNum();z++){
+            Cell actualCell = one.getCell(z);
+            actualCell.setCellType(Cell.CELL_TYPE_STRING);
+            indices.put(actualCell.getStringCellValue(), z);
                     try 
                     {
                          int c =actualCell.getCellType();
                     } 
                     catch (NullPointerException e) 
                     {
-                          break;
+                        rowcounter=z;
+                        break;
                     }
+            rowcounter=z;
+        }
+        //Durchlaufen der einzelnen Zeilen eines Worksheets
+        for(int zeile=1; zeile<=workSheet.getLastRowNum();zeile++)
+           {
+               Row actualRow= workSheet.getRow(zeile);
+               BikeObject bike = new BikeObject();
 
-                    if(zeile==0)
-                    {
-                        actualCell.setCellType(Cell.CELL_TYPE_STRING);
-                        indices.put(actualCell.getStringCellValue(), zelle);
-                    }
+               //Durchlaufen der einzelnen Zellen
+                for(int zelle=0; zelle<=rowcounter;zelle++)
+                {
+                    Cell actualCell = actualRow.getCell(zelle);
 
-                    else
-                    {
                         actualCell.setCellType(Cell.CELL_TYPE_STRING);
                         
                         if(zelle==indices.get("DATE_FROM"))//StartRentalTime
@@ -72,12 +72,12 @@ public class BikeImport
                             bike.setStartRentalZone(actualCell.getStringCellValue());
                         
                         if(zelle==indices.get("END_RENTAL_ZONE"))//EndRentalZone
-                            bike.setEndRentalZone(actualCell.getStringCellValue());
-                        
-                    }
+                            bike.setEndRentalZone(actualCell.getStringCellValue());     
                 }
                 bikeObjectList.add(bike);
            }
+        
+        return bikeObjectList;
     }
 }
                            

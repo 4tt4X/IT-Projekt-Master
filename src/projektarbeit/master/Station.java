@@ -3,16 +3,27 @@ package projektarbeit.master;
 import java.util.ArrayList;
 
 
-public class SubwayStation 
+public class Station
 {
+    ArrayList<DataNode> dataNodes = new ArrayList<>();
+    
+    ArrayList<TrainObject> trainObjectList = new TrainImport().generateTrainList();
+    
+    ArrayList<BikeObject> bikeObjectList = new BikeImport().generateBikeList();
+    
+    
+    
+    
+    
+    
+    
+    
     private String stationName;
     
     
-    private int maxBikeCapacity;
-    
     
     private ArrayList<Object> dataNode;
-
+ 
     
             //---------- GET-Methods ----------
     

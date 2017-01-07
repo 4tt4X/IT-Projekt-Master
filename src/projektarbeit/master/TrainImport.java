@@ -2,6 +2,7 @@ package projektarbeit.master;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -15,7 +16,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class TrainImport 
 {
-        public static void main(String[] args) throws IOException 
+        public ArrayList<TrainObject> generateTrainList() throws FileNotFoundException, IOException
         {
             String excelFilePath = "C:\\Users\\Julian\\Google Drive\\IT-Projekt\\finale Daten\\Verwendete Datensätze\\U-Bahn-Daten-bereinigt.xlsx";
 
@@ -25,8 +26,6 @@ public class TrainImport
           
             ArrayList<TrainObject> trainObjectList = new ArrayList<>();
             
-            //ArrayList<SubwayStation> subwayStationList = new ArrayList<>();
-                     
             //Durchlaufen der einzelnen Worksheets eines Excel-Files
             Iterator<Sheet> sheetIterator = workbook.iterator();
             
@@ -87,9 +86,11 @@ public class TrainImport
                             }
                         }
                       trainObjectList.add(train);
-                    }
-                //subwayStationList.add(station);                                                
-               }                
-            }                                   
+                    }                                               
+               }   
+            
+                    return trainObjectList;
+            }
+        
     }
 
