@@ -31,7 +31,8 @@ public class TrainImport
             
             while(sheetIterator.hasNext())
             {
-               Sheet workSheet = sheetIterator.next();                                
+               Sheet workSheet = sheetIterator.next(); 
+               String stationName = workSheet.getSheetName();
                Map<String, Integer> indices = new HashMap<>(); 
                
                //Durchlaufen der einzelnen Zeilen eines Worksheets
@@ -83,7 +84,9 @@ public class TrainImport
                                 train.setEnteringPersons(Integer.parseInt(actualCell.getStringCellValue()));
                         }
                     }
+                      train.setStation(stationName);
                       trainObjectList.add(train);
+                      
                }
             }
             return trainObjectList;

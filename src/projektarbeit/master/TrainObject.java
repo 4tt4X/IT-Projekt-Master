@@ -7,6 +7,7 @@ import java.text.SimpleDateFormat;
 
     public class TrainObject 
     {
+        private String station;
         private Timestamp departureDateTime;
         private String date;
         private String time;
@@ -25,9 +26,14 @@ import java.text.SimpleDateFormat;
         //---------- GET-Methods ----------
      
 
+    public String getStation()
+    {
+        return station;
+    }
     
     public Timestamp getDepartureDateTime()
     {
+        departureDateTime = Timestamp.valueOf(date+" "+time);
         return departureDateTime;
     }
     
@@ -71,8 +77,11 @@ import java.text.SimpleDateFormat;
 
     //---------- Set-Methods ----------
     
-    //Methode, die Haltestelle nach Worksheet Name setzt
-    
+
+    public void setStation(String station)
+    {
+        this.station = station;
+    }
     
     public void setTime(String time) 
     {
@@ -82,12 +91,6 @@ import java.text.SimpleDateFormat;
     public void setDate(String date)
     {            
         this.date = new SimpleDateFormat("yyyy-MM-dd").format(date);
-    }
-    
-    public Timestamp getDepartureTimeAsTimestamp()
-    {
-        departureDateTime = Timestamp.valueOf(date+" "+time);
-        return departureDateTime;
     }
 
     public void setTotalCapacity(int totalCapacity) 

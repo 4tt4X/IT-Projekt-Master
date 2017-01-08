@@ -6,7 +6,6 @@ import java.sql.Timestamp;
 
 public class BikeObject 
 {
-    
     private Timestamp startRentalTimeStamp;
     private String endRentalTime;
     private String startRentalZone;

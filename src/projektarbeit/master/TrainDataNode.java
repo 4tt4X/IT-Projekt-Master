@@ -11,6 +11,7 @@ public class TrainDataNode
     private double averageUtilization = 0.0;
     private Timestamp startNode;
     private Timestamp endNode;
+    private String stationName;
     
 
     
@@ -33,13 +34,17 @@ public class TrainDataNode
         }
         
         this.averageUtilization = utilizationPercent/counter;
-        
     }
     
     public void setTimeFrame(Timestamp startNode, Timestamp endNode)
     {
         this.startNode=startNode;
         this.endNode=endNode;
+    }
+    
+    public void setStationName(String stationName)
+    {
+        this.stationName=stationName;
     }
     
     //------------GETTER-Methoden-------------

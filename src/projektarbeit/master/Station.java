@@ -47,8 +47,9 @@ public class Station
             else
             {
                 actualDataNode.calculateAverageUtilization();
-                actualDataNode.setTimeFrame(startNode, endNode);
-                
+                actualDataNode.setTimeFrame(startNode, endNode);//endnode evtl Überschneidung mit nächstem Node?
+                //Data Node muss Station-Name noch mitgegeben werden
+                //actualDataNode.setStationName(stationName);
                 trainDataNodes.add(actualDataNode);
                 actualDataNode = new TrainDataNode();
                 timeFactor+=1;
@@ -57,8 +58,7 @@ public class Station
                 
         }
     }
-    // Kriegs heute nicht mehr gebacken
-    
+
     
     public void createBikeDataNodes()
     {
