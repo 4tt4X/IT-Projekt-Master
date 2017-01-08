@@ -3,13 +3,14 @@ package projektarbeit.master;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
 
 
 public class Station
 {
-    ArrayList<DataNode> dataNodes = new ArrayList<>();
+    ArrayList<TrainDataNode> trainDataNodes = new ArrayList<>();
+    
+    ArrayList<BikeDataNode> bikeDataNodes = new ArrayList<>();
     
     ArrayList<TrainObject> trainObjectList = new TrainImport().generateTrainList();
     
@@ -22,33 +23,35 @@ public class Station
     
     public void createTrainDataNodes()
     {
-        DataNode actualDataNode = new DataNode();
-        int timeFactor = 900000;
-        int i = 1;
-        String multipliedTimeFactor = Integer.toString(timeFactor*i);
+        TrainDataNode actualDataNode = new TrainDataNode();
+        int timeSpan = 900000;
+        int timeFactor = 1;
+        String multipliedStartTimeFactor = Integer.toString(timeSpan*(timeFactor-1));
+        String multipliedEndTimeFactor = Integer.toString(timeSpan*timeFactor);
         Timestamp startNode;
         Timestamp endNode;
-
+// 
                         
         for(TrainObject nextActual:trainObjectList)
         {            
             Timestamp departureTime = nextActual.getDepartureDateTime();
-            startNode = Timestamp.valueOf(nextActual.getDate());
-            endNode = Timestamp.valueOf(nextActual.getDate() + multipliedTimeFactor);
+            startNode = Timestamp.valueOf(nextActual.getDate() + multipliedStartTimeFactor);
+            endNode = Timestamp.valueOf(nextActual.getDate() + multipliedEndTimeFactor);
 
             
             if((departureTime.after(startNode) || departureTime.equals(startNode)) && departureTime.before(endNode))
             {
-                actualDataNode
-                                
-                actualDataNode.setTotalUtilization(nextActual.getRelativeTotalUtilization());
-                actualDataNode.setSeatUtilization(nextActual.getRelativeSeatUtilization());
+                actualDataNode.addTrainObjects(nextActual);
             }
             
             else
             {
-                dataNodes.add(actualDataNode);
-                actualDataNode = new DataNode();
+                actualDataNode.calculateAverageUtilization();
+                actualDataNode.setTimeFrame(startNode, endNode);
+                
+                trainDataNodes.add(actualDataNode);
+                actualDataNode = new TrainDataNode();
+                timeFactor+=1;
                 
             }
                 
@@ -59,6 +62,16 @@ public class Station
     
     public void createBikeDataNodes()
     {
+        BikeDataNode actualDataNode = new BikeDataNode();
+        int timeSpan = 900000;
+        int timeFactor = 1;
+        String multipliedStartTimeFactor = Integer.toString(timeSpan*(timeFactor-1));
+        String multipliedEndTimeFactor = Integer.toString(timeSpan*timeFactor);
+        Timestamp startNode;
+        Timestamp endNode;
+        
+        
+        
         for(BikeObject nextActual:bikeObjectList)
         {
             Timestamp startRentalTime = nextActual.getStartRentalTimeStamp();
